@@ -227,6 +227,7 @@ fork(void)
 void
 exit(int status)
 {
+//test
   struct proc *curproc = myproc();
   struct proc *p;
   int fd;
