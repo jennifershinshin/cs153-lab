@@ -270,7 +270,7 @@ exit(int status)
 // Wait for a child process to exit and return its pid.
 // Return -1 if this process has no children.
 int
-wait(void)
+wait(int *status)
 {
   struct proc *p;
   int havekids, pid;
@@ -286,7 +286,7 @@ wait(void)
       havekids = 1;
       if(p->state == ZOMBIE){
         // Found one.
-        pid = p->pid;
+	pid = p->pid;
         kfree(p->kstack);
         p->kstack = 0;
         freevm(p->pgdir);
@@ -296,6 +296,10 @@ wait(void)
         p->killed = 0;
         p->state = UNUSED;
         release(&ptable.lock);
+
+	//if status is NULL, discard child's exit status
+	if(status == NULL) { pid = 0; }
+
         return pid;
       }
     }

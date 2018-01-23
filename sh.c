@@ -84,7 +84,7 @@ runcmd(struct cmd *cmd)
     close(rcmd->fd);
     if(open(rcmd->file, rcmd->mode) < 0){
       printf(2, "open %s failed\n", rcmd->file);
-      exit(0);
+      exit(2);
     }
     runcmd(rcmd->cmd);
     break;
@@ -93,7 +93,7 @@ runcmd(struct cmd *cmd)
     lcmd = (struct listcmd*)cmd;
     if(fork1() == 0)
       runcmd(lcmd->left);
-    wait();
+    wait(0); //placeholder
     runcmd(lcmd->right);
     break;
 
@@ -117,8 +117,8 @@ runcmd(struct cmd *cmd)
     }
     close(p[0]);
     close(p[1]);
-    wait();
-    wait();
+    wait(p[0]);
+    wait(p[1]);
     break;
 
   case BACK:
@@ -166,7 +166,7 @@ main(void)
     }
     if(fork1() == 0)
       runcmd(parsecmd(buf));
-    wait();
+    wait(fd);
   }
   exit(0);
 }
@@ -175,7 +175,7 @@ void
 panic(char *s)
 {
   printf(2, "%s\n", s);
-  exit(0);
+  exit(2);
 }
 
 int
