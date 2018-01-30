@@ -5,15 +5,15 @@ int main(int argc, char *argv[])
 {
 	
 	int exitWait(void);
-	int waitPid(void);
+//	int waitPid(void);
 	
 
   printf(1, "\n This program tests the correctness of your lab#1\n");
   
   if (atoi(argv[1]) == 1)
 	exitWait();
-  else if (atoi(argv[1]) == 2)
-	waitPid();
+//  else if (atoi(argv[1]) == 2)
+//	waitPid();
   else 
    printf(1, "\ntype \"lab1 1\" to test exit and wait, \"lab1 2\" to test waitpid \n");
   
@@ -54,7 +54,7 @@ int exitWait(void) {
   return 0;
 }
 
-int waitPid(void){
+/*int waitPid(void){
 	
   int ret_pid, exit_status;
   int i;
@@ -94,4 +94,4 @@ int waitPid(void){
       printf(1, "\n This is the partent: Child# %d has exited with status %d\n",ret_pid, exit_status);
       
       return 0;
-  }
+  }*/
