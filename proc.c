@@ -538,3 +538,10 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int
+waitpid(int pid, int *status, int options)
+{
+  //write stuff
+  return 0;
+}
