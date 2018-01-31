@@ -232,6 +232,8 @@ exit(int status)
   struct proc *curproc = myproc();
   struct proc *p;
   int fd;
+ 
+  curproc->status = status;
 
   if(curproc == initproc)
     panic("init exiting");
@@ -277,7 +279,7 @@ wait(int *status)
   struct proc *p;
   int havekids, pid;
   struct proc *curproc = myproc();
-  
+  status = &curproc->status;
   acquire(&ptable.lock);
   for(;;){
     // Scan through table looking for exited children.

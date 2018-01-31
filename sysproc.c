@@ -20,15 +20,18 @@ sys_exit(void)
   //return 0;  // not reached
   int status;
 
-  if(argint(0, &status) < 0)
+  if(argint(0, &status) < 0){
+    exit(-1);
     return -1;
+}
   exit(status);
+  return 0;
 }
 
 int
 sys_wait(void)
 {
-  int *status;
+ // int *status;
   return wait(0); //placeholder
 }
 
@@ -99,9 +102,9 @@ sys_uptime(void)
 int
 sys_waitpid(void)
 {
-  int pid;
-  int *status;
-  int options;
+ // int pid;
+ // int *status;
+ // int options;
   
   return 0;
   //write stuff
