@@ -35,7 +35,17 @@ sys_wait(void)
   if(argptr(0, (char**)&status, 4) < 0 ){
 	return -1;
  }
-  return wait(status); //placeholder
+  return wait(status);
+}
+
+int
+sys_waitpid(void)
+{
+  int *status;
+  if(argptr(0, (char**)&status, 4) < 0){
+	return -1;
+  }
+  return waitpid(0,status,0); //placeholder
 }
 
 int
@@ -102,13 +112,3 @@ sys_uptime(void)
   return xticks;
 }
 
-int
-sys_waitpid(void)
-{
- // int pid;
- // int *status;
- // int options;
-  
-  return 0;
-  //write stuff
-}
