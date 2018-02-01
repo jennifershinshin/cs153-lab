@@ -48,11 +48,11 @@ sys_waitpid(void)
   if(argptr(1, (char**)&status, 4) < 0){
     return -1;
   }
-  if(argint(0, &pid) == pid){
-    return pid;
+  if(argint(0, &pid) < 0){
+    return -1;
   }
-  if(argint(2, &options) == options){
-    return options;
+  if(argint(2, &options) < 0){
+    return -1;
   }
   return waitpid(pid,status,options);
 }
