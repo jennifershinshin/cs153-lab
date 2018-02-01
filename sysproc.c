@@ -51,6 +51,9 @@ sys_waitpid(void)
   if(argint(1, &pid) == pid){
     return pid;
   }
+  if(argint(2, &options) == options){
+    return options;
+  }
   return waitpid(pid,status,options);
 }
 
