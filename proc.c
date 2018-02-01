@@ -303,7 +303,7 @@ wait(int *status)
 	//if status is NULL, discard child's exit status
 	if(status == NULL) { pid = 0; }
 	
-	status = curproc->status;
+	status = &curproc->status;
         return pid;
       }
     }
