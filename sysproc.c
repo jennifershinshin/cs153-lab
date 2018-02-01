@@ -21,7 +21,7 @@ sys_exit(void)
   int status;
 
   if(argint(0, &status) < 0){
-    exit(-1);
+    exit(1);
     return -1;
 }
   exit(status);
