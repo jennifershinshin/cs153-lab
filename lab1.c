@@ -35,16 +35,19 @@ int exitWait(void) {
       if (i == 0)
       {
       printf(1, "\nThis is child with PID# %d and I will exit with status %d\n", getpid(), 0);
+      printf(1, "child 0\n");
       exit(0);
   }
       else
       {
 	 printf(1, "\nThis is child with PID# %d and I will exit with status %d\n" ,getpid(), -1);
-      exit(-1);
+         printf(1, "child 1\n");
+         exit(-1);
   } 
     } else if (pid > 0) { // only the parent exeecutes this code
       ret_pid = wait(&exit_status);
       printf(1, "\n This is the parent: child with PID# %d has exited with status %d\n", ret_pid, exit_status);
+      printf(1, "parent\n");
     } else  // something went wrong with fork system call
     {  
 	  printf(2, "\nError using fork\n");
@@ -54,7 +57,7 @@ int exitWait(void) {
   return 0;
 }
 
-/*int waitPid(void){
+int waitPid(void){
 	
   int ret_pid, exit_status;
   int i;
@@ -94,4 +97,4 @@ int exitWait(void) {
       printf(1, "\n This is the partent: Child# %d has exited with status %d\n",ret_pid, exit_status);
       
       return 0;
-  }*/
+  }

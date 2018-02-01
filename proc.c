@@ -304,7 +304,7 @@ wait(int *status)
 	//if status is NULL, discard child's exit status
 	if(status == NULL) { pid = 0; }
 	
-	*status = curproc->status;
+	*status = p->status;
         return pid;
       }
     }
@@ -322,10 +322,10 @@ wait(int *status)
 
 
 int
-waitpid(int pids, int *status, int options)
+waitpid(int pid, int *status, int options)
 {
   struct proc *p;
-  int havekids, pid;
+  int havekids;
   struct proc *curproc = myproc();
   acquire(&ptable.lock);
   for(;;){
@@ -351,7 +351,7 @@ waitpid(int pids, int *status, int options)
 	//if status is NULL, discard child's exit status
 	if(status == NULL) { pid = 0; }
 	
-	status = &curproc->status;
+	status = p->status;
         return pid;
       }
     }

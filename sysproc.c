@@ -41,11 +41,19 @@ sys_wait(void)
 int
 sys_waitpid(void)
 {
+  /*int pid;
   int *status;
+  int options;
+
   if(argptr(0, (char**)&status, 4) < 0){
-	return -1;
+    return -1;
   }
-  return waitpid(0,status,0); //placeholder
+  if(argptr(1, (char**)&status, 4) == pid){
+    return pid;
+  }
+  return waitpid(pid,status,options); //placeholder
+  */
+  return 0;
 }
 
 int
