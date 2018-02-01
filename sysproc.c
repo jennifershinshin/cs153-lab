@@ -45,10 +45,10 @@ sys_waitpid(void)
   int *status;
   int options=0;
 
-  if(argptr(0, (char**)&status, 4) < 0){
+  if(argptr(1, (char**)&status, 4) < 0){
     return -1;
   }
-  if(argint(1, &pid) == pid){
+  if(argint(0, &pid) == pid){
     return pid;
   }
   if(argint(2, &options) == options){
