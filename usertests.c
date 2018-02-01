@@ -65,7 +65,7 @@ exitiputtest(void)
       printf(stdout, "unlink ../iputdir failed\n");
       exit(1);
     }
-    exit(1);
+    exit(0);
   }
   wait(NULL);
   printf(stdout, "exitiput test ok\n");
@@ -101,9 +101,9 @@ openiputtest(void)
     int fd = open("oidir", O_RDWR);
     if(fd >= 0){
       printf(stdout, "open directory for write succeeded\n");
-      exit(1);
+      exit(0);
     }
-    exit(1);
+    exit(0);
   }
   sleep(1);
   if(unlink("oidir") != 0){
@@ -131,7 +131,7 @@ opentest(void)
   fd = open("doesnotexist", 0);
   if(fd >= 0){
     printf(stdout, "open doesnotexist succeeded!\n");
-    exit(1);
+    exit(0);
   }
   printf(stdout, "open test ok\n");
 }
@@ -325,7 +325,7 @@ pipe1(void)
         exit(1);
       }
     }
-    exit(1);
+    exit(0);
   } else if(pid > 0){
     close(fds[1]);
     total = 0;
@@ -452,7 +452,7 @@ mem(void)
     }
     free(m1);
     printf(1, "mem ok\n");
-    exit(1);
+    exit(0);
   } else {
     wait(NULL);
   }
@@ -485,7 +485,7 @@ sharedfd(void)
     }
   }
   if(pid == 0)
-    exit(1);
+    exit(0);
   else
     wait(NULL);
   close(fd);
@@ -635,7 +635,7 @@ createdelete(void)
         exit(1);
       } else if((i >= 1 && i < N/2) && fd >= 0){
         printf(1, "oops createdelete %s did exist\n", name);
-        exit(1);
+        exit(0);
       }
       if(fd >= 0)
         close(fd);
@@ -744,18 +744,18 @@ linktest(void)
 
   if(link("lf2", "lf2") >= 0){
     printf(1, "link lf2 lf2 succeeded! oops\n");
-    exit(1);
+    exit(0);
   }
 
   unlink("lf2");
   if(link("lf2", "lf1") >= 0){
     printf(1, "link non-existant succeeded! oops\n");
-    exit(1);
+    exit(0);
   }
 
   if(link(".", "lf1") >= 0){
     printf(1, "link . lf1 succeeded! oops\n");
-    exit(1);
+    exit(0);
   }
 
   printf(1, "linktest ok\n");
@@ -1731,7 +1731,7 @@ void argptest()
   fd = open("init", O_RDONLY);
   if (fd < 0) {
     printf(2, "open failed\n");
-    exit(2);
+    exit(1);
   }
   read(fd, sbrk(0) - 1, -1);
   close(fd);

@@ -300,11 +300,11 @@ wait(int *status)
         p->killed = 0;
         p->state = UNUSED;
         release(&ptable.lock);
-
+	//status = &curproc->status;
 	//if status is NULL, discard child's exit status
 	if(status == NULL) { pid = 0; }
 	
-	status = &curproc->status;
+	*status = curproc->status;
         return pid;
       }
     }
