@@ -5,15 +5,15 @@ int main(int argc, char *argv[])
 {
 	
 	int exitWait(void);
-//	int waitPid(void);
+	int waitPid(void);
 	
 
   printf(1, "\n This program tests the correctness of your lab#1\n");
   
   if (atoi(argv[1]) == 1)
 	exitWait();
-//  else if (atoi(argv[1]) == 2)
-//	waitPid();
+  else if (atoi(argv[1]) == 2)
+	waitPid();
   else 
    printf(1, "\ntype \"lab1 1\" to test exit and wait, \"lab1 2\" to test waitpid \n");
   
@@ -35,19 +35,16 @@ int exitWait(void) {
       if (i == 0)
       {
       printf(1, "\nThis is child with PID# %d and I will exit with status %d\n", getpid(), 0);
-      printf(1, "child 0\n");
       exit(0);
   }
       else
       {
 	 printf(1, "\nThis is child with PID# %d and I will exit with status %d\n" ,getpid(), -1);
-         printf(1, "child 1\n");
          exit(-1);
   } 
     } else if (pid > 0) { // only the parent exeecutes this code
       ret_pid = wait(&exit_status);
       printf(1, "\n This is the parent: child with PID# %d has exited with status %d\n", ret_pid, exit_status);
-      printf(1, "parent\n");
     } else  // something went wrong with fork system call
     {  
 	  printf(2, "\nError using fork\n");

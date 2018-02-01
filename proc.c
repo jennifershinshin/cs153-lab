@@ -351,7 +351,7 @@ waitpid(int pid, int *status, int options)
 	//if status is NULL, discard child's exit status
 	if(status == NULL) { pid = 0; }
 	
-	status = p->status;
+       	*status = p->status;
         return pid;
       }
     }
