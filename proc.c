@@ -374,6 +374,12 @@ setPriority(void)
   return;
 }
 
+int
+getPriority(void)
+{
+  return 1;
+}
+
 //LAB NOTES
 //Add system call to set priority
 //add function to get priority
