@@ -367,6 +367,13 @@ waitpid(int pid, int *status, int options)
     sleep(curproc, &ptable.lock);  //DOC: wait-sleep
   }
 }
+
+void
+setPriority(void)
+{
+  return;
+}
+
 //LAB NOTES
 //Add system call to set priority
 //add function to get priority
