@@ -374,17 +374,17 @@ setPriority(void)
   return;
 }
 
-int
-getPriority(void)
-{
-  return 1;
-}
+//int
+//getPriority(void)
+//{
+//  return 1;
+//}
 
 //LAB NOTES
 //Add system call to set priority
 //add function to get priority
 //0 is highest priority
-
+//something about releasing lock when you're done
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
