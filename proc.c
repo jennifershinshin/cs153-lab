@@ -65,7 +65,6 @@ myproc(void) {
   popcli();
   return p;
 }
-
 //PAGEBREAK: 32
 // Look in the process table for an UNUSED proc.
 // If found, change state to EMBRYO and initialize
@@ -368,6 +367,11 @@ waitpid(int pid, int *status, int options)
     sleep(curproc, &ptable.lock);  //DOC: wait-sleep
   }
 }
+//LAB NOTES
+//Add system call to set priority
+//add function to get priority
+//0 is highest priority
+
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.

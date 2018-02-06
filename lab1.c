@@ -34,13 +34,13 @@ int exitWait(void) {
     if (pid == 0) { // only the child executed this code
       if (i == 0)
       {
-      printf(1, "\nThis is child with PID# %d and I will exit with status %d\n", getpid(), 0);
-      exit(0);
+      printf(1, "\nThis is child with PID# %d and I will exit with status %d\n", getpid(), 5);
+      exit(5);
   }
       else
       {
-	 printf(1, "\nThis is child with PID# %d and I will exit with status %d\n" ,getpid(), -1);
-         exit(-1);
+	 printf(1, "\nThis is child with PID# %d and I will exit with status %d\n" ,getpid(), 2);
+         exit(2);
   } 
     } else if (pid > 0) { // only the parent exeecutes this code
       ret_pid = wait(&exit_status);
