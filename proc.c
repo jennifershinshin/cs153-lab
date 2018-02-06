@@ -199,6 +199,9 @@ fork(void)
   np->sz = curproc->sz;
   np->parent = curproc;
   *np->tf = *curproc->tf;
+  
+  //setting priority
+  setPriority(np->pid);
 
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
@@ -371,7 +374,17 @@ waitpid(int pid, int *status, int options)
 int
 setPriority(int pid)
 {
-  return -1;
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if(pid == p->pid) {
+      p->priority = 0;
+      release(&ptable.lock);
+      return pid;
+    }
+  }
+  release(&ptable.lock); 
+  return -1;	//didn't find process in process table
 }
 
 //int
