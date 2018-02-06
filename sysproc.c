@@ -57,18 +57,16 @@ sys_waitpid(void)
   return waitpid(pid,status,options);
 }
 
-void
+int
 sys_setPriority(void)
 {
-  setPriority(); // PLACEHOLDER
-  return;
-}
+  int pid;
 
-int
-sys_getPriority(void)
-{
-  return myproc()->priority; // PLACEHOLDER
-  return -1;
+  if(argint(0, &pid) < 0){
+    return -1;
+  }
+
+  return setPriority(pid);
 }
 
 int

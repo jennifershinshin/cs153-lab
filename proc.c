@@ -368,10 +368,10 @@ waitpid(int pid, int *status, int options)
   }
 }
 
-void
-setPriority(void)
+int
+setPriority(int pid)
 {
-  return;
+  return -1;
 }
 
 //int
