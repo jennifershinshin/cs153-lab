@@ -70,6 +70,13 @@ sys_setPriority(void)
 }
 
 int
+sys_getPriority(void)
+{
+  return myproc()->priority; //PLACEHOLDER
+  return -1;
+}
+
+int
 sys_kill(void)
 {
   int pid;

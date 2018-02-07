@@ -387,11 +387,11 @@ setPriority(int pid)
   return -1;	//didn't find process in process table
 }
 
-//int
-//getPriority(void)
-//{
-//  return 1;
-//}
+int
+getPriority(void)
+{
+  return 1;
+}
 
 //LAB NOTES
 //Add system call to set priority
