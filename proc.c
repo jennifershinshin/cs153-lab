@@ -149,6 +149,7 @@ userinit(void)
   acquire(&ptable.lock);
 
   p->state = RUNNABLE;
+  p->priority = 0;
 
   release(&ptable.lock);
 }
@@ -388,16 +389,37 @@ setPriority(int pid)
 }
 
 int
-getPriority(void)
+getPriority(int pid)
 {
-  return 1;
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if(pid == p->pid) {
+      release(&ptable.lock);
+      return p->pid;
+    }
+  }
+  release(&ptable.lock); 
+  return -1;	//didn't find process in process table
+}
+
+int
+getTopPriority(void)
+{
+  return 1;//PLACEHOLDER
+}
+
+int
+getNumProcesses(void)
+{
+  return 1;//PLACEHOLDER
 }
 
 //LAB NOTES
 //Add system call to set priority
 //add function to get priority
 //0 is highest priority
-//something about releasing lock when you're done
+//something about releasing lock when you're done (that's the table lock)
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -412,6 +434,8 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
+
+  //int topPriority = getTopPriority();
   
   for(;;){
     // Enable interrupts on this processor.
@@ -420,7 +444,7 @@ scheduler(void)
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
+      if((p->state != RUNNABLE))// && (p->priority != topPriority))
         continue;
 
       // Switch to chosen process.  It is the process's job

@@ -27,6 +27,8 @@ int uptime(void);
 int waitpid(int, int*, int);
 int setPriority(int); 
 int getPriority(void);
+int getTopPriority(void);
+int getNumProcesses(void);
 
 // ulib.c
 int stat(char*, struct stat*);

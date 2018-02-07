@@ -23,3 +23,5 @@
 #define SYS_waitpid 22
 #define SYS_setPriority 23
 #define SYS_getPriority 24
+#define SYS_getTopPriority 25
+#define SYS_getNumProcesses 26
