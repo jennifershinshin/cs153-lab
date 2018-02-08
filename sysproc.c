@@ -84,15 +84,13 @@ sys_getPriority(void)
 int
 sys_getTopPriority(void)
 {
-  //getTopPriority();
-  return 1;
+  return getTopPriority();
 }
 
 int
 sys_getNumProcesses(void)
 {
-  //getNumProcesses();
-  return 1;
+  return getNumProcesses();
 }
 
 int

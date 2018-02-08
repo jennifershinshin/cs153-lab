@@ -7,6 +7,7 @@
 #include "proc.h"
 #include "spinlock.h"
 #include <stddef.h>
+//#include <limits>
 
 struct {
   struct spinlock lock;
@@ -283,6 +284,7 @@ wait(int *status)
   struct proc *p;
   int havekids, pid;
   struct proc *curproc = myproc();
+  curproc->priority += 1;	//aging piroirty
   acquire(&ptable.lock);
   for(;;){
     // Scan through table looking for exited children.
@@ -330,6 +332,7 @@ waitpid(int pid, int *status, int options)
   struct proc *p;
   int havekids;
   struct proc *curproc = myproc();
+  curproc->priority += 1;	//aging priority
   acquire(&ptable.lock);
   for(;;){
     // Scan through table looking for exited children.
@@ -372,6 +375,7 @@ waitpid(int pid, int *status, int options)
   }
 }
 
+//TODO: change inner if statement
 int
 setPriority(int pid)
 {
@@ -403,16 +407,35 @@ getPriority(int pid)
   return -1;	//didn't find process in process table
 }
 
+//top priority = highest value. lowest prioirity = 0
 int
 getTopPriority(void)
 {
-  return 1;//PLACEHOLDER
+  int topPriority = 0; //CHANGE: std::numeric_limits<int>::max();
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if((topPriority <= p->priority) && (p->state == RUNNABLE)) {
+      topPriority = p->priority;
+    }
+  }
+  release(&ptable.lock); 
+  return topPriority;
 }
 
 int
 getNumProcesses(void)
 {
-  return 1;//PLACEHOLDER
+  int count = 0;
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if(p->state == UNUSED) { //&& != ZOMBIE??
+      count++;
+    }
+  }
+  release(&ptable.lock); 
+  return count;
 }
 
 //LAB NOTES
@@ -435,7 +458,7 @@ scheduler(void)
   struct cpu *c = mycpu();
   c->proc = 0;
 
-  //int topPriority = getTopPriority();
+  int topPriority = getTopPriority();
   
   for(;;){
     // Enable interrupts on this processor.
@@ -444,7 +467,7 @@ scheduler(void)
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if((p->state != RUNNABLE))// && (p->priority != topPriority))
+      if((p->state != RUNNABLE) || (p->priority != topPriority))
         continue;
 
       // Switch to chosen process.  It is the process's job
