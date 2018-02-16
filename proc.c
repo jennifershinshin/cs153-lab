@@ -372,17 +372,11 @@ waitpid(int pid, int *status, int options)
 }
 
 int
-setPriority(int pid)
+setPriority(int priority)
 {
-  struct proc *p;
+  struct proc *p = myproc();
   acquire(&ptable.lock);
-  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-    if(pid == p->pid) {
-      p->priority = 0;
-      release(&ptable.lock);
-      return pid;
-    }
-  }
+      p->priority = priority;
   release(&ptable.lock); 
   return -1;	//didn't find process in process table
 }
@@ -420,7 +414,7 @@ scheduler(void)
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
+      if((p->state != RUNNABLE) && (p->priority != 0))
         continue;
 
       // Switch to chosen process.  It is the process's job

@@ -60,13 +60,13 @@ sys_waitpid(void)
 int
 sys_setPriority(void)
 {
-  int pid;
+  int priority;
 
-  if(argint(0, &pid) < 0){
+  if(argint(0, &priority) < 0){
     return -1;
   }
 
-  return setPriority(pid);
+  return setPriority(priority);
 }
 
 int
