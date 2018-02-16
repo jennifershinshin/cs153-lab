@@ -121,7 +121,7 @@ int             wait(int* status);
 void            wakeup(void*);
 void            yield(void);
 int		waitpid(int pid, int *status, int options);
-int		setPriority(int pid);
+int		setPriority(int priority);
 int		getPriority(int pid);
 int		getTopPriority(void);
 int		getNumProcesses(void);
