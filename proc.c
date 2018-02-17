@@ -90,8 +90,11 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p-> priority = 20;
+ // p-> arrivalTime = sys_uptime();
   release(&ptable.lock);
-
+  acquire(&tickslock);
+  p-> arrivalTime = ticks;
+  release(&tickslock);
   // Allocate kernel stack.
   if((p->kstack = kalloc()) == 0){
     p->state = UNUSED;
@@ -268,7 +271,9 @@ exit(int status)
         wakeup1(initproc);
     }
   }
-
+  acquire(&tickslock);
+  curproc->endTime = ticks;
+  release(&tickslock);
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
   sched();
@@ -424,6 +429,22 @@ getTopPriority(void)
 }
 
 int
+getTurnAroundTime(int pid)
+{
+  struct proc *p;
+ // int time = 12345; //for bug testing
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if(pid == p-> pid){
+       release(&ptable.lock);
+       return (p->endTime - p->arrivalTime);
+    }
+   }
+   release(&ptable.lock);
+   return -1; //pid not found
+}
+
+int
 getNumProcesses(void)
 {
   int count = 0;
@@ -457,7 +478,7 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
- // int topPriorityPid = 10000;
+  int topPriorityPid = 10000;
 
 //  int topPriorityPid = getTopPriority();
   
@@ -469,8 +490,9 @@ scheduler(void)
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
+	topPriorityPid = getTopPriority();
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if((p->state != RUNNABLE) || (p->pid != getTopPriority())){
+      if((p->state != RUNNABLE) || (p->pid != topPriorityPid)){
 	//panic(myproc()->priority);
         continue;
 }
@@ -485,6 +507,11 @@ scheduler(void)
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
+      
+      acquire(&tickslock);
+      //int t = sys_uptime();
+      p->waitTime += (ticks - p->waitBegin);
+      release(&tickslock);
 
       swtch(&(c->scheduler), p->context);
       switchkvm();
@@ -528,6 +555,10 @@ sched(void)
 void
 yield(void)
 {
+  acquire(&tickslock);
+  myproc()->waitBegin = ticks;
+  release(&tickslock);
+
   acquire(&ptable.lock);  //DOC: yieldlock
   myproc()->state = RUNNABLE;
   sched();

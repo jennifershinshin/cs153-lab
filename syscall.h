@@ -25,3 +25,4 @@
 #define SYS_getPriority 24
 #define SYS_getTopPriority 25
 #define SYS_getNumProcesses 26
+#define SYS_getTurnAroundTime 27
