@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
   printf(1, "\n This program tests the correctness of your lab#2\n");
   
 	PScheduler();
+	exit(0);
 	return 0;
  }
   
@@ -26,12 +27,14 @@ int main(int argc, char *argv[])
 	printf(1, "\n  Step 2: 0 is the highest priority. All processes have a default priority of 10\n");
 	printf(1, "\n  Step 2: The parent processes will switch to priority 0\n");
 	setPriority(0);
+	//printf(1,"print %d",getpid());
 	for (i = 0; i <  3; i++) {
        		pid = fork();
 		if (pid > 0 ) {
 			continue;}
 		else if ( pid == 0) {
-			setPriority(30-10*i);	
+			setPriority(30-10*i);
+			//printf(1,"hi %d", getpid());	
 			for (j=0;j<50000;j++) {
 				for(k=0;k<10000;k++) {
 					asm("nop"); }}

@@ -89,7 +89,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
-
+  p-> priority = 20;
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -379,11 +379,12 @@ waitpid(int pid, int *status, int options)
 int
 setPriority(int priority)
 {
-  struct proc *p = myproc();
+ // struct proc *p = myproc();
   acquire(&ptable.lock);
-      p->priority = priority;
+      myproc()->priority = priority;
+	
   release(&ptable.lock); 
-  return -1;	//didn't find process in process table
+  return 0;	//didn't find process in process table
 }
 
 int
@@ -394,7 +395,7 @@ getPriority(int pid)
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
     if(pid == p->pid) {
       release(&ptable.lock);
-      return p->pid;
+      return p->priority;
     }
   }
   release(&ptable.lock); 
@@ -408,14 +409,17 @@ getTopPriority(void)
   int topPriority = 10000; //CHANGE: std::numeric_limits<int>::max();
   int returnPid = 0;
   struct proc *p;
-  acquire(&ptable.lock);
+  //acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
     if((topPriority >= p->priority) && (p->state == RUNNABLE)) {
       topPriority = p->priority;
+      
+      //topPriority = 0;
       returnPid = p->pid;
+	//panic("KILL");
     }
   }
-  release(&ptable.lock); 
+  //release(&ptable.lock); 
   return returnPid;
 }
 
@@ -453,18 +457,27 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
+ // int topPriorityPid = 10000;
 
-  int topPriority = getTopPriority();
+//  int topPriorityPid = getTopPriority();
   
   for(;;){
+//	int topPriorityPid = getTopPriority();
     // Enable interrupts on this processor.
     sti();
+	//topPriorityPid = getTopPriority();
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if((p->state != RUNNABLE) && (p->pid != topPriority))
+      if((p->state != RUNNABLE) || (p->pid != getTopPriority())){
+	//panic(myproc()->priority);
         continue;
+}
+//panic("why");
+//	if(p->pid != topPriorityPid)
+//	continue;
+	
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
