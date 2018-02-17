@@ -30,6 +30,7 @@ int getPriority(void);
 int getTopPriority(void);
 int getNumProcesses(void);
 int getTurnAroundTime(int);
+int getWaitTime(int);
 
 // ulib.c
 int stat(char*, struct stat*);

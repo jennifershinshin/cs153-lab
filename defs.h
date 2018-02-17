@@ -126,7 +126,7 @@ int		getPriority(int pid);
 int		getTopPriority(void);
 int		getNumProcesses(void);
 int		getTurnAroundTime(int pid);
-
+int		getWaitTime(int pid);
 // swtch.S
 void            swtch(struct context**, struct context*);
 

@@ -455,6 +455,22 @@ getTurnAroundTime(int pid)
 }
 
 int
+getWaitTime(int pid)
+{
+  struct proc *p;
+
+ acquire(&ptable.lock);
+ for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+   if(pid == p->pid){
+      release(&ptable.lock);
+      return (p->waitTime);
+    }
+   }
+   release(&ptable.lock);
+   return -1;
+}
+
+int
 getNumProcesses(void)
 {
   int count = 0;

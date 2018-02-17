@@ -109,6 +109,7 @@ extern int sys_getPriority(void);
 extern int sys_getTopPriority(void);
 extern int sys_getNumProcesses(void);
 extern int sys_getTurnAroundTime(void);
+extern int sys_getWaitTime(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -138,6 +139,7 @@ static int (*syscalls[])(void) = {
 [SYS_getTopPriority] sys_getTopPriority,
 [SYS_getNumProcesses] sys_getNumProcesses,
 [SYS_getTurnAroundTime] sys_getTurnAroundTime,
+[SYS_getWaitTime] sys_getWaitTime,
 };
 
 void
