@@ -94,6 +94,7 @@ found:
   release(&ptable.lock);
   acquire(&tickslock);
   p-> arrivalTime = ticks;
+ // p-> endTime = 10000000;
   release(&tickslock);
   // Allocate kernel stack.
   if((p->kstack = kalloc()) == 0){
@@ -240,8 +241,14 @@ exit(int status)
   struct proc *p;
   int fd;
  
-  curproc->status = status;
+  //acquire(&tickslock);
+ // acquire(&ptable.lock);
+  //myproc()->endTime = ticks;
+  //release(&ptable.lock);
+  //release(&tickslock);
 
+  curproc->status = status;
+  
   if(curproc == initproc)
     panic("init exiting");
 
@@ -271,9 +278,9 @@ exit(int status)
         wakeup1(initproc);
     }
   }
-  acquire(&tickslock);
-  curproc->endTime = ticks;
-  release(&tickslock);
+ // acquire(&tickslock);
+ // curproc->endTime = ticks;
+ // release(&tickslock);
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
   sched();
@@ -309,6 +316,9 @@ wait(int *status)
         p->name[0] = 0;
         p->killed = 0;
         p->state = UNUSED;
+        //acquire(&tickslock);
+        //p->endTime = ticks;
+  	//release(&tickslock);
         release(&ptable.lock);
 	//status = &curproc->status;
 	//if status is NULL, discard child's exit status
@@ -537,7 +547,9 @@ sched(void)
 {
   int intena;
   struct proc *p = myproc();
-
+  acquire(&tickslock);
+  myproc() -> endTime = ticks;
+  release(&tickslock);
   if(!holding(&ptable.lock))
     panic("sched ptable.lock");
   if(mycpu()->ncli != 1)
